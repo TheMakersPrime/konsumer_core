@@ -6,8 +6,13 @@
 *.swp
 .buildlog/
 .history
+.metadata
 
-
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
 
 # Flutter repo-specific
 /bin/cache/
