@@ -9,7 +9,7 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AutoDisposeKonsumerCore(
+    return KonsumerCore(
       provider: counterNotifierProvider,
       builder: (context, notifier, state, ref) {
         return Scaffold(
