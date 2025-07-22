@@ -28,6 +28,6 @@ class _KonsumerBaseState extends ConsumerState<KonsumerBase> {
 
   @override
   Widget build(BuildContext context) {
-    return build(context);
+    return widget.builder(ref);
   }
 }
