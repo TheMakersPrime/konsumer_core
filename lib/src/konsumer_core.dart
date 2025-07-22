@@ -8,7 +8,7 @@ typedef Builder<N, S> = Widget Function(BuildContext, N, S, WidgetRef);
 typedef Listen<N, S> = void Function(BuildContext, N, S, WidgetRef);
 typedef OnReady<N> = void Function(N);
 
-class KonsumerCore<N extends Notifier<S>, S> extends StatelessWidget {
+class KonsumerCore<N extends AutoDisposeNotifier<S>, S> extends StatelessWidget {
   const KonsumerCore({
     super.key,
     required this.provider,
@@ -17,7 +17,7 @@ class KonsumerCore<N extends Notifier<S>, S> extends StatelessWidget {
     this.listen,
   });
 
-  final NotifierProvider<N, S> provider;
+  final AutoDisposeNotifierProvider<N, S> provider;
   final Builder<N, S> builder;
   final Listen<N, S>? listen;
   final OnReady<N>? onReady;
@@ -43,8 +43,8 @@ class KonsumerCore<N extends Notifier<S>, S> extends StatelessWidget {
   }
 }
 
-class AutoDisposeKonsumerCore<N extends AutoDisposeNotifier<S>, S> extends StatelessWidget {
-  const AutoDisposeKonsumerCore({
+class StickyKonsumerCore<N extends Notifier<S>, S> extends StatelessWidget {
+  const StickyKonsumerCore({
     super.key,
     required this.provider,
     required this.builder,
@@ -52,7 +52,7 @@ class AutoDisposeKonsumerCore<N extends AutoDisposeNotifier<S>, S> extends State
     this.listen,
   });
 
-  final AutoDisposeNotifierProvider<N, S> provider;
+  final NotifierProvider<N, S> provider;
   final Builder<N, S> builder;
   final Listen<N, S>? listen;
   final OnReady<N>? onReady;
