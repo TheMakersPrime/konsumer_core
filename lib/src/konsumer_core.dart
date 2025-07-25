@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:konsumer_core/src/konsumer_base.dart';
+import 'package:konsumer_core/src/konsumer_pod.dart';
 
-typedef Builder<N, S> = Widget Function(BuildContext, N, S, WidgetRef);
-typedef Listen<N, S> = void Function(BuildContext, N, S, WidgetRef);
-typedef OnReady<N> = void Function(N);
+typedef KonsumerBuilder<N, S> = Widget Function(BuildContext, KonsumerPod<N, S>);
+typedef KonsumerListen<N, S> = void Function(BuildContext, KonsumerPod<N, S>);
+typedef KonsumerOnReady<N> = void Function(N);
 
 class KonsumerCore<N extends AutoDisposeNotifier<S>, S> extends StatelessWidget {
   const KonsumerCore({
@@ -18,9 +19,9 @@ class KonsumerCore<N extends AutoDisposeNotifier<S>, S> extends StatelessWidget 
   });
 
   final AutoDisposeNotifierProvider<N, S> provider;
-  final Builder<N, S> builder;
-  final Listen<N, S>? listen;
-  final OnReady<N>? onReady;
+  final KonsumerBuilder<N, S> builder;
+  final KonsumerListen<N, S>? listen;
+  final KonsumerOnReady<N>? onReady;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +34,11 @@ class KonsumerCore<N extends AutoDisposeNotifier<S>, S> extends StatelessWidget 
         ref.listen(provider, (oldState, newState) {
           // Call [listen] only when state changes
           if (listen != null && oldState != newState) {
-            listen!(context, notifier, state, ref);
+            listen!(context, KonsumerPod(notifier, newState, ref));
           }
         });
 
-        return builder(context, notifier, state, ref);
+        return builder(context, KonsumerPod(notifier, state, ref));
       },
     );
   }
@@ -53,9 +54,9 @@ class StickyKonsumerCore<N extends Notifier<S>, S> extends StatelessWidget {
   });
 
   final NotifierProvider<N, S> provider;
-  final Builder<N, S> builder;
-  final Listen<N, S>? listen;
-  final OnReady<N>? onReady;
+  final KonsumerBuilder<N, S> builder;
+  final KonsumerListen<N, S>? listen;
+  final KonsumerOnReady<N>? onReady;
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +69,11 @@ class StickyKonsumerCore<N extends Notifier<S>, S> extends StatelessWidget {
         ref.listen(provider, (oldState, newState) {
           // Call [listen] only when state changes
           if (listen != null && oldState != newState) {
-            listen!(context, notifier, state, ref);
+            listen!(context, KonsumerPod(notifier, newState, ref));
           }
         });
 
-        return builder(context, notifier, state, ref);
+        return builder(context, KonsumerPod(notifier, state, ref));
       },
     );
   }
